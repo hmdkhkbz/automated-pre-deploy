@@ -1,0 +1,79 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./.htpasswd:/etc/nginx/.htpasswd
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/certbot:/data/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    # Remove the ports mapping for Prometheus to restrict it to internal access
+    volumes:
+      - prometheus-data:/prometheus  # Persist Prometheus data
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Prometheus config
+      - ./alert.rules:/etc/prometheus/alert.rules  # Alert rules
+    networks:
+      - monitoring
+    restart: always
+    extra_hosts:
+      - "controller01:172.16.18.74"
+      - "controller02:172.16.18.45"
+      - "controller03:172.16.18.62"
+      - "network01:172.16.18.16"
+      - "network02:172.16.18.80"
+      - "compute01:172.16.18.76"
+      - "compute02:172.16.18.17"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD}  # Set admin password
+      GF_USERS_ALLOW_SIGN_UP: "false"  # Disable sign-up for security
+    volumes:
+      - grafana-data:/var/lib/grafana  # Persist Grafana data
+    depends_on:
+      - prometheus  # Ensure Prometheus starts before Grafana
+    networks:
+      - monitoring
+    restart: always
+
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: node_exporter
+    # Remove the ports mapping for Node Exporter to restrict it to internal access
+    networks:
+      - monitoring
+    restart: always
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    # Remove the ports mapping for Alertmanager to restrict it to internal access
+    volumes:
+      - alertmanager-data:/alertmanager  # Persist Alertmanager data
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml  # Alertmanager config
+      - ./alerts.tmpl:/etc/alertmanager/templates/alerts.tmpl
+    networks:
+      - monitoring
+    restart: always
+
+networks:
+  monitoring:
+    driver: bridge  # Default bridge network for internal communication
+
+volumes:
+  prometheus-data:
+  grafana-data:
+  alertmanager-data:

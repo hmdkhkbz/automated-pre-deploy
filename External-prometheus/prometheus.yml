@@ -1,0 +1,109 @@
+global:
+  scrape_interval: 15s  # Scrape metrics every 15 seconds
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - 'alertmanager:9093'  # Connect to Alertmanager for handling alerts
+
+rule_files:
+  - '/etc/prometheus/alert.rules'  # Load the alerting rules from mounted file
+
+scrape_configs:
+  - job_name: 'controller01'
+    static_configs:
+      - targets: ['controller01:9100']  # Scrape Prometheus metrics
+        labels:
+          instance: 'controller01'
+
+  - job_name: 'controller02'
+    static_configs:
+      - targets: ['controller02:9100']  # Scrape Prometheus metrics
+        labels:
+          instance: 'controller02'
+
+  - job_name: 'controller03'
+    static_configs:
+      - targets: ['controller03:9100']  # Scrape Prometheus metrics
+        labels:
+          instance: 'controller03'
+
+  - job_name: 'memcached01'
+    static_configs:
+      - targets: ['controller01:9150']  # Scrape Prometheus metrics
+        labels:
+          instance: 'memcached01'
+
+  - job_name: 'memcached02'
+    static_configs:
+      - targets: ['controller02:9150']  # Scrape Prometheus metrics
+        labels:
+          instance: 'memcached02'
+
+  - job_name: 'memcached03'
+    static_configs:
+      - targets: ['controller03:9150']  # Scrape Prometheus metrics
+        labels:
+          instance: 'memcached03'  
+
+  - job_name: 'mariadb01'
+    static_configs:
+      - targets: ['controller01:9104']  # Scrape Prometheus metrics
+        labels:
+          instance: 'mariadb01'
+
+  - job_name: 'mariadb02'
+    static_configs:
+      - targets: ['controller02:9104']  # Scrape Prometheus metrics
+        labels:
+          instance: 'mariadb02'
+
+  - job_name: 'mariadb03'
+    static_configs:
+      - targets: ['controller03:9104']  # Scrape Prometheus metrics
+        labels:
+          instance: 'mariadb03'
+
+  - job_name: 'compute01'
+    static_configs:
+      - targets: ['compute01:9100']  # Scrape Prometheus metrics
+        labels:
+          instance: 'compute01'
+
+
+  - job_name: 'compute02'
+    static_configs:
+      - targets: ['compute02:9100']  # Scrape Prometheus metrics
+        labels:
+          instance: 'compute02'
+
+  - job_name: 'network01'
+    static_configs:
+      - targets: ['network01:9100']  # Scrape Prometheus metrics
+        labels:
+          instance: 'network01'
+
+  - job_name: 'network02'
+    static_configs:
+      - targets: ['network02:9100']  # Scrape Prometheus metrics
+        labels:
+          instance: 'network02'
+
+  - job_name: 'libvirt01'
+    static_configs:
+      - targets: ['compute01:9177']  # Scrape Prometheus metrics
+        labels:
+          instance: 'libvirt01'
+
+  - job_name: 'libvirt02'
+    static_configs:
+      - targets: ['compute02:9177']  # Scrape Prometheus metrics
+        labels:
+          instance: 'libvirt02'
+
+  - job_name: 'openstack_exporter'
+    static_configs:
+      - targets: ['172.16.18.38:9198']
+        labels:
+          instance: 'openstack_exporter'  # Scrape Prometheus metrics

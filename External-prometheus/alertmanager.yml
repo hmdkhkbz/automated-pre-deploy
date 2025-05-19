@@ -1,0 +1,21 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: 'telegram-receiver'
+  routes:
+    - match:
+        severity: 'critical'
+      receiver: 'telegram-receiver'
+
+receivers:
+  - name: 'telegram-receiver'
+    telegram_configs:
+    - api_url: 'https://api.telegram.org'
+      bot_token: '8054252675:AAGaatpkgKRJmpYKfwFtydc-kOn2FjFfM2I'
+      chat_id: -1002394505668
+      message: '{{ template "telegram_message" . }}'
+      parse_mode: 'HTML'
+
+templates:
+  - 'templates/alerts.tmpl'
