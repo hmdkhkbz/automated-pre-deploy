@@ -21,9 +21,11 @@ services:
       - ELASTICSEARCH_ENABLE_SECURITY=false
     volumes:
       - es-data:/bitnami/elasticsearch/data
+    ports:
+      - "9200:9200"
     networks:
       - elk
-  
+
   kibana:
     image: docker.io/bitnami/kibana:8.8.0
     container_name: kibana
