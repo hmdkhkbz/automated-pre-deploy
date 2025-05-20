@@ -1,0 +1,58 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./.htpasswd:/etc/nginx/.htpasswd
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/certbot:/data/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - elk
+
+  elasticsearch:
+    image: docker.io/bitnami/elasticsearch:8.8.0
+    container_name: elasticsearch
+    environment:
+      - ELASTICSEARCH_ENABLE_SECURITY=false
+    volumes:
+      - es-data:/bitnami/elasticsearch/data
+    networks:
+      - elk
+  
+  kibana:
+    image: docker.io/bitnami/kibana:8.8.0
+    container_name: kibana
+    environment:
+      - KIBANA_ENABLE_SECURITY=false
+      - KIBANA_ELASTICSEARCH_URL=http://elasticsearch:9200
+    volumes:
+      - ./bitnami/kibana/config/kibana.yml:/opt/bitnami/kibana/config/kibana.yml:ro
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+
+  logstash:
+    image: docker.io/bitnami/logstash:8.8.0
+    container_name: logstash
+    volumes:
+      - "./bitnami/logstash/config:/bitnami/logstash/config"
+      - "./bitnami/logstash/pipeline:/bitnami/logstash/pipeline"
+    ports:
+      - "5044:5044"
+    environment:
+      - LOGSTASH_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+
+networks:
+  elk:
+volumes:
+  es-data:
