@@ -9,18 +9,6 @@ This repository provides a Docker Compose setup for an ELK (Elasticsearch, Logst
 * [Overview](#overview)
 * [Components](#components)
 * [Prerequisites](#prerequisites)
-* [Getting Started](#getting-started)
-    * [Clone the Repository](#clone-the-repository)
-    * [Configuration](#configuration)
-        * [Fluentd Configuration (`fluentd/fluent.conf`)](#fluentd-configuration-fluentdfluentconf)
-        * [Logstash Configuration (`logstash/pipeline/logstash.conf`)](#logstash-configuration-logstashpipelinelogstashconf)
-    * [Running the ELK Stack](#running-the-elk-stack)
-* [Integrating Fluentd with OpenStack (Kolla-Ansible)](#integrating-fluentd-with-openstack-kolla-ansible)
-* [Accessing the Services](#accessing-the-services)
-* [Troubleshooting](#troubleshooting)
-* [Contributing](#contributing)
-* [License](#license)
-
 ---
 
 ## Overview
