@@ -1,0 +1,137 @@
+---
+- name: remove resolv.conf
+  file:
+    path: /etc/resolv.conf
+    state: absent
+
+- name: create resolv.conf with custom NS
+  copy:
+    dest: /etc/resolv.conf
+    content: |
+      nameserver 185.206.92.250
+      nameserver 185.231.181.206
+
+- name: remove cloudinit hosts conf
+  lineinfile:
+    path: /etc/cloud/templates/hosts.debian.tmpl
+    line: '   manage_etc_hosts: True'
+    state: absent
+
+- name: remove cloudinit cloud.cfg conf
+  lineinfile:
+    path: /etc/cloud/cloud.cfg
+    line: '{{ item }}'
+  loop:
+    - 'preserve_hostname: false'
+    - '- set_hostname'
+    - '- update_hostname'
+    - '- update_etc_hosts'
+
+- name: update apt cache
+  apt: update_cache=yes
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Add an entry for the kolla_internal_fqdn in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ kolla_internal_vip }} {{ kolla_internal_fqdn }}"
+    regexp: "{{ kolla_internal_vip }} {{ kolla_internal_fqdn }}"
+    state: present
+  tags: vip
+
+- name: Install and configure NTP
+  block:
+    - name: Install NTP package
+      apt:
+        name: ntp
+        state: present
+        update_cache: yes
+
+    - name: Start and enable NTP service
+      systemd:
+        name: ntp
+        enabled: true
+        state: started
+
+- name: Hosts | create hosts list from OpenStack inventory on all nodes
+  set_fact:
+    etc_hosts_inventory_block: |-
+      {% for host in groups['all'] | unique -%}
+      {% if hostvars[host]['access_ip'] is defined %}
+      {{ hostvars[host]['access_ip'] }} {{ hostvars[host]['ansible_hostname'] }}
+      {% endif %}
+      {% endfor %}
+
+- name: Hosts | populate OpenStack inventory into hosts file on all nodes
+  blockinfile:
+    path: /etc/hosts
+    block: "{{ etc_hosts_inventory_block }}"
+    state: "{{ 'present' if populate_inventory_to_hosts_file else 'absent' }}"
+    create: true
+    backup: true
+    unsafe_writes: true
+    marker: "# Ansible OpenStack hosts {mark}"
+    mode: "0644"
+
+- name: Install base packages for Cephadm and OpenStack
+  become: true
+  package:
+    name:
+      - python3
+      - python3-pip
+      - sudo
+      - wget
+      - curl
+      - vim
+      - git
+      - ntp
+      - chrony
+      - screen
+      - tmux
+      - bash-completion
+      - net-tools
+      - iproute2
+      - traceroute
+      - iputils-ping  # Changed 'ping' to 'iputils-ping'
+      - rsync
+      - unzip
+    state: present
+
+- name: Install prerequisites for Docker
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+    update_cache: true
+
+- name: Create /etc/kolla/fluentd directory
+  file:
+    path: /etc/kolla/fluentd
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create /etc/kolla/cron directory
+  file:
+    path: /etc/kolla/cron
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy Kolla certificates to all nodes
+  ansible.builtin.copy:
+    src: /etc/kolla/certificates/
+    dest: /etc/kolla/certificates/
+    mode: '0644'
+    owner: root
+    group: root
+  tags: certs
