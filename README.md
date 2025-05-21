@@ -74,3 +74,17 @@ A well-designed OpenStack deployment leverages multiple distinct networks, each 
 
 * **Purpose:** This network provides connectivity between OpenStack instances and the outside world (e.g., the internet, corporate intranet). It's where floating IPs are allocated and associated with instances, allowing external access to them. It also provides the gateway for tenant networks to reach external destinations.
 
+## External Ceph RBD (using cephadm)
+- 3x mons
+- 3x osds
+
+## Ceph Networks
+- Public Network: for connection with Storage clients (openstack)
+- Cluster Network: Dedicated for replication of Internal osd workloads.
+
+## Ceph RBD Pools
+- volumes: for cinder-volume
+- images: for glance
+- backups: for cinder-backup
+- vms: for nova
+
