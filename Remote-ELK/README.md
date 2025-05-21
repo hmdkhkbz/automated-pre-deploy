@@ -4,12 +4,6 @@
 
 This repository provides a Docker Compose setup for an ELK (Elasticsearch, Logstash, Kibana) stack, specifically designed to integrate with Fluentd instances deployed on OpenStack nodes via Kolla-Ansible. This configuration is ideal for centralizing logs from your OpenStack environment, making them searchable and visualizable within Kibana.
 
-## Table of Contents
-
-* [Overview](#overview)
-* [Components](#components)
-* [Prerequisites](#prerequisites)
----
 
 ## Overview
 
@@ -33,24 +27,6 @@ The `docker-compose.yml` file defines the following services for the centralized
 * `elasticsearch`: The data store for logs.
 * `kibana`: The visualization layer for logs.
 
-The Fluentd configuration provided here (`fluentd/fluent.conf`) is a *template* for what you would typically deploy with Kolla-Ansible on your OpenStack nodes.
-
----
-
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-* **Docker:** [Install Docker](https://docs.docker.com/get-docker/)
-* **Docker Compose:** [Install Docker Compose](https://docs.docker.com/compose/install/) (usually comes with Docker Desktop)
-* **Familiarity with Kolla-Ansible:** Understanding how Kolla-Ansible deploys and manages OpenStack services, including custom configurations for log aggregation, is crucial for integrating Fluentd.
-* **OpenStack Nodes with Kolla-Ansible:** Your OpenStack environment should be deployed or ready for deployment using Kolla-Ansible.
-
----
-
-## Consider Kolla Ansible version compatibility.
+The Fluentd configuration provided here (managed by kolla-ansible) would typically deploy with Kolla-Ansible on your OpenStack nodes.
 
 
-
-What version of Kolla Ansible are you running? This directly impacts the container image versions it deploys, including Fluentd and its plugins.
-Once you align the Fluentd client version with your Elasticsearch/OpenSearch server version, your Fluentd container should start and remain running.
