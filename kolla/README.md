@@ -47,76 +47,25 @@ This section details how `cinder`, `glance`, and `nova` services are configured 
 * **Ceph Configuration File (`ceph.conf`):**
     You will typically place your customized `ceph.conf` in a location that Kolla Ansible can pick up, such as `etc/kolla/config/ceph.conf`. This file will contain the necessary global Ceph settings, including `fsid`, `mon_host`, and client-specific configurations.
 
-    ```ini
-    # Example content for etc/kolla/config/ceph.conf
-    [global]
-    fsid = <your_ceph_cluster_fsid>
-    mon_host = <ceph_monitor_ip_1>,<ceph_monitor_ip_2> # ...
-    auth_cluster_required = cephx
-    auth_service_required = cephx
-    auth_client_required = cephx
-    # ... other global settings
-
-    [client]
-    rbd_cache = true
-    rbd_cache_max_mb = 256
-    rbd_cache_writethrough_until_flush = true
-    keyring = /etc/ceph/ceph.client.nova.keyring # Example, refer to service specific keyrings
-    # ... other client settings
-    ```
-
 * **Ceph Keyrings:**
     Each OpenStack service that interacts with Ceph requires its own keyring with appropriate capabilities. These keyrings should be placed in the correct paths that Kolla Ansible mounts into the containers. For example, you might place them under `etc/kolla/config/ceph/` or directly mount them.
 
     * **Cinder (cinder-volume, cinder-backup):**
         The `cinder` folder likely contains overrides for Cinder configuration. To enable Ceph for Cinder, you'll modify `cinder.conf` (often via `etc/kolla/config/cinder/cinder.conf` or a `config.json` entry in Kolla).
 
-        ```ini
-        # Example for cinder.conf to use Ceph RBD driver
-        [DEFAULT]
-        # ...
-        enabled_backends = rbd
 
-        [rbd]
-        volume_backend_name = rbd
-        volume_driver = cinder.volume.drivers.rbd.RBDDriver
-        rbd_cluster_name = ceph
-        rbd_pool = volumes
-        rbd_ceph_conf = /etc/ceph/ceph.conf
-        rbd_secret_uuid = <your_libvirt_secret_uuid_for_cinder> # If using Cinder with Nova for ephemeral volumes
-        rbd_user = cinder
-        rbd_keyring_path = /etc/ceph/ceph.client.cinder.keyring
-        ```
         Ensure `ceph.client.cinder.keyring` with read/write capabilities on the `volumes` and `images` (if glance is using it) pools.
 
     * **Glance:**
         The `glance` folder will contain Glance configuration. To enable Ceph for Glance image storage, you'll typically modify `glance-api.conf`.
 
-        ```ini
-        # Example for glance-api.conf to use Ceph RBD backend
-        [glance_store]
-        stores = file,http,rbd
-        default_store = rbd
-        rbd_store_pool = images
-        rbd_store_user = glance
-        rbd_store_ceph_conf = /etc/ceph/ceph.conf
-        rbd_store_chunk_size = 8
-        rbd_store_keyring_path = /etc/ceph/ceph.client.glance.keyring
-        ```
+
         Ensure `ceph.client.glance.keyring` with read/write capabilities on the `images` pool.
 
     * **Nova (nova-compute for ephemeral volumes):**
         The `nova` folder contains Nova configurations. For Nova instances to use Ceph RBD for ephemeral disks, `nova.conf` needs to be configured. The `nova.conf` file at the root of your repository is likely intended for this.
 
-        ```ini
-        # Example for nova.conf to use Ceph RBD for ephemeral storage
-        [libvirt]
-        images_type = rbd
-        images_rbd_pool = volumes # Or a dedicated ephemeral pool
-        images_rbd_ceph_conf = /etc/ceph/ceph.conf
-        images_rbd_user = nova
-        images_rbd_secret_uuid = <your_libvirt_secret_uuid_for_nova>
-        ```
+
         Ensure `ceph.client.nova.keyring` (or the one associated with the `rbd_user`) with read/write capabilities on the `volumes` (or ephemeral) pool. You'll also need to create a libvirt secret on each compute node that references this keyring.
 
 **Deployment Steps for Ceph:**
