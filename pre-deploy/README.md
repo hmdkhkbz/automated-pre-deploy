@@ -31,6 +31,7 @@ This playbook typically performs, but is not limited to, the following tasks:
 * **Sysctl Settings:** Configures kernel parameters via `sysctl` for network tuning, memory management, and other OpenStack requirements.
 * **Firewall Configuration (Basic):** Opens essential ports or disables the firewall if it's not managed externally (Kolla Ansible often expects minimal host-level firewall interference, relying on internal container networking).
 * **User/Group Creation:** (Optional) Creates specific users or groups if required by your Kolla Ansible setup beyond default needs.
+* **Copy Host file to all nodes:** hosts file entities will be automatically generated from inventory.yaml file
 
 ## Usage
 
