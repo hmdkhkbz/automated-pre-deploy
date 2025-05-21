@@ -62,6 +62,54 @@ git clone https://git.arvancloud.ir/arvancloud/iaas/terraform-provider.git
 * `outputs.tf`: Defines the output values that will be displayed after the deployment.
 * **(Add any other relevant configuration files or directories)**
 
+## Outcome
+this terraform will creates a inventory.yaml file that could be used in ansible predeploy playbook as below: 
+replaces each created port ip to it's desired place:
+
+all:
+  vars:
+    ansible_ssh_port: 22
+    ansible_ssh_private_key_file: /root/ary.pem
+    populate_inventory_to_hosts_file: true
+  children:
+    all:
+      children:
+        control:
+          hosts:
+            controller01:
+              ansible_host: 192.168.88.102
+              access_ip: 172.16.18.13
+              ansible_hostname: controller01
+            controller02:
+              ansible_host: 192.168.88.29
+              access_ip: 172.16.18.46
+              ansible_hostname: controller02
+            controller03:
+              ansible_host: 192.168.88.151
+              access_ip: 172.16.18.114
+              ansible_hostname: controller03
+        compute:
+          hosts:
+            compute01:
+              ansible_host: 192.168.88.39
+              access_ip: 172.16.18.132
+              ansible_hostname: compute01
+            compute02:
+              ansible_host: 192.168.88.69
+              access_ip: 172.16.18.121
+              ansible_hostname: compute02
+        network:
+          hosts:
+            network01:
+              ansible_host: 192.168.88.173
+              access_ip: 172.16.18.158
+              ansible_hostname: network01
+            network02:
+              ansible_host: 192.168.88.12
+              access_ip: 172.16.18.113
+              ansible_hostname: network02 
+
+
 ## Usage
 
 After successfully applying the configuration, your AbrAk infrastructure will be running on Arvan IaaS. You can access the deployed resources based on their configurations (e.g., SSH to instances using their public IPs, access web applications via load balancer IPs/DNS names).
