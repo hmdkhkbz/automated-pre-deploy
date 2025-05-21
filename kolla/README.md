@@ -1,6 +1,6 @@
 # Advanced customized configuration for Kolla 
 
-This repository contains custom configurations and playbooks for deploying OpenStack using Kolla Ansible, with a focus on integrating Ceph storage, customizing Fluentd for logging, and enhancing OVN (Open Virtual Network) logging details.
+This repository contains custom configurations and playbooks for deploying OpenStack using Kolla Ansible, with a focus on integrating External Ceph RBD, customizing Fluentd for logging, customizing Internal certificate and nova.conf and enhancing OVN (Open Virtual Network) logging details.
 
 ## Repository Structure
 
@@ -8,18 +8,22 @@ The core customization files are organized as follows, aligning with your provid
 
 .
 ├── cinder/
+
 ├── fluentd/
+
 ├── glance/
+
 ├── haproxy/
+
 ├── nova/
+
 ├── openvswitch/
-└── nova.conf
 
 ## Features
 
 This repository provides the following key customizations:
 
-* **Ceph Integration:** Configures `cinder-volume`, `cinder-backup`, `nova`, and `glance` to use Ceph for storage, including `ceph.conf` and keyring management.
+* **Ceph Pools:** Configures `cinder-volume`, `cinder-backup`, `nova`, and `glance` to use Ceph for storage, including `ceph.conf` and keyring management.
 * **Customized Fluentd:** Defines custom input and output configurations for Fluentd to tailor log aggregation.
 * **Detailed OVN Logging:** Enhances logging for OVN Northbound (NB) and Southbound (SB) databases for better debugging and operational insights.
 
@@ -128,38 +132,6 @@ The `fluentd` folder is where your custom Fluentd configurations reside. This al
 * **Custom Fluentd Configuration:**
     You'll typically create files like `etc/kolla/config/fluentd/fluent.conf` or separate configuration snippets. These files will be mounted into the Fluentd containers.
 
-    ```ini
-    # Example content for fluentd/fluent.conf
-    # This example adds a new input for a custom application log
-    <source>
-      @type tail
-      path /var/log/my_app/app.log
-      pos_file /var/log/td-agent/my_app.log.pos
-      tag my_app.log
-      <parse>
-        @type none # Or use json, regexp, etc.
-      </parse>
-    </source>
-
-    # This example adds a new output to an external Splunk instance
-    <match my_app.log>
-      @type splunkhec
-      hec_host <splunk_hec_host>
-      hec_port 8088
-      hec_token <splunk_hec_token>
-      # ... other Splunk HEC options
-    </match>
-
-    # You can also customize existing outputs, e.g., sending OpenStack logs to a different target
-    <match kolla.**>
-      @type elasticsearch
-      host <your_elasticsearch_host>
-      port 9200
-      logstash_format true
-      # ... other Elasticsearch options
-    </match>
-    ```
-
 **Deployment Steps for Fluentd:**
 1.  Place your customized Fluentd configuration files within the `fluentd/` directory of this repository, mimicking the path Kolla Ansible expects (e.g., `etc/kolla/config/fluentd/fluent.conf`).
 2.  Kolla Ansible will mount these files into the Fluentd containers.
@@ -172,25 +144,7 @@ The `openvswitch` folder likely contains configurations related to OVN and Open 
 This is typically done by modifying the `ovn-controller` and `ovn-northd` container environment variables or by passing specific arguments. In Kolla Ansible, you might achieve this through `kolla_extra_config` for OVN services or by adding arguments to `ovn-controller` and `ovn-northd` startup commands.
 
 * **How to Set Logging Levels:**
-    You'll usually modify the `ovn-controller` and `ovn-northd` services' startup parameters to include verbose logging flags. For example:
-
-    ```bash
-    # For ovn-northd
-    --log-file=/var/log/openvswitch/ovn-northd.log --verbose=dbg
-
-    # For ovn-controller
-    --log-file=/var/log/openvswitch/ovn-controller.log --verbose=dbg
-    ```
-
-    In Kolla Ansible, you can add these to the `openvswitch_ovn_northd_extra_args` and `openvswitch_ovn_controller_extra_args` variables in your `globals.yml` or inventory:
-
-    ```yaml
-    # Example for globals.yml or inventory
-    openvswitch_ovn_northd_extra_args: "--verbose=dbg"
-    openvswitch_ovn_controller_extra_args: "--verbose=dbg"
-    ```
-
-    Alternatively, you might need to create a custom entrypoint script or a custom `kolla-ansible` override if direct argument injection isn't sufficient for very specific logging configurations.
+    You'll usually modify the `ovn-controller` and `ovn-northd` services' startup parameters to include verbose logging flags. 
 
 **Deployment Steps for OVN Logging:**
 1.  Modify your Kolla Ansible `globals.yml` or inventory file to include the `openvswitch_ovn_northd_extra_args` and `openvswitch_ovn_controller_extra_args` variables with the desired logging levels (e.g., `--verbose=dbg`).
