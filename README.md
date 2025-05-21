@@ -1,5 +1,5 @@
-# automated-pre-deploy
-automated-pre-deploy environment
+# automated-pre-deploy HA Openstack
+automated-pre-deploy Openstack environment (including: 3x Controller, 2x Compute and 2x Network nodes)
 
 ![alt text](https://thamed.s3.ir-tbz-sh1.arvanstorage.ir/hope.png)
 
