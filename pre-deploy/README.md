@@ -1,1 +1,79 @@
-fff
+# Kolla Ansible Infrastructure Pre-setup Playbook
+
+This repository contains an Ansible playbook designed to prepare your server infrastructure for a seamless OpenStack deployment using Kolla Ansible. It automates common prerequisites, ensuring that your hosts meet the necessary requirements before running Kolla Ansible's deployment playbooks.
+
+## Purpose
+
+The primary purpose of this playbook is to:
+* Automate the initial configuration of hosts, reducing manual setup time and potential errors.
+* Ensure all necessary dependencies and settings are in place for Kolla Ansible to function correctly.
+* Provide a standardized, repeatable process for infrastructure preparation.
+
+## Prerequisites
+
+Before running this pre-setup playbook, ensure the following:
+
+* **Ansible Control Node:** You have a machine (your workstation or a dedicated server) with Ansible installed.
+* **SSH Access:** The Ansible control node must have passwordless SSH access (using SSH keys) to all target hosts where OpenStack will be deployed.
+* **Sudo Privileges:** The SSH user used by Ansible must have `sudo` privileges on all target hosts without requiring a password (`NOPASSWD`).
+* **Inventory File:** You have an Ansible inventory file (`hosts.ini` or similar) that lists all your target hosts, grouped appropriately (e.g., `controller`, `compute`, `storage`).
+
+## What This Playbook Does (Common Pre-setup Tasks)
+
+This playbook typically performs, but is not limited to, the following tasks:
+
+* **Operating System Updates:** Updates system packages to their latest versions.
+* **Dependency Installation:** Installs essential packages required by Kolla Ansible, such as Python dependencies, `apt-transport-https`, `ca-certificates`, `curl`, `gnupg-agent`, `software-properties-common`, etc.
+* **Docker Installation:** Installs and configures Docker Engine on all target hosts.
+* **NTP Configuration:** Ensures time synchronization across all nodes, which is crucial for distributed systems like OpenStack.
+* **Disable SELinux / AppArmor:** Disables or sets SELinux to permissive mode (if applicable) and disables AppArmor, as Kolla Ansible typically requires this.
+* **Kernel Module Loading:** Ensures necessary kernel modules (e.g., for overlay networks, bridge filtering) are loaded and persistent across reboots.
+* **Sysctl Settings:** Configures kernel parameters via `sysctl` for network tuning, memory management, and other OpenStack requirements.
+* **Firewall Configuration (Basic):** Opens essential ports or disables the firewall if it's not managed externally (Kolla Ansible often expects minimal host-level firewall interference, relying on internal container networking).
+* **User/Group Creation:** (Optional) Creates specific users or groups if required by your Kolla Ansible setup beyond default needs.
+
+## Usage
+
+1.  **Clone this Repository:**
+    ```bash
+    git clone <your-repo-url>
+    cd <your-repo-name>
+    ```
+
+2.  **Verify Inventory:**
+    Ensure your `inventory` (or equivalent inventory file) correctly lists all your target machines.
+
+    ```inventory
+    # Example hosts.ini
+    [controller]
+    controller01 ansible_host=192.168.1.10
+
+    [compute]
+    compute01 ansible_host=192.168.1.20
+    compute02 ansible_host=192.168.1.21
+
+    [storage]
+    storage01 ansible_host=192.168.1.30
+    ```
+
+3.  **Run the Playbook:**
+    Execute the playbook from your Ansible control node.
+
+    ```bash
+    ansible-playbook -i hosts.ini playbook.yml
+    ```
+    (Replace `playbook.yml` with the actual name of your main pre-setup playbook file).
+
+    If you need to specify a different user:
+    ```bash
+    ansible-playbook -i hosts.ini playbook.yml -u <your_ssh_user>
+    ```
+
+4.  **Review Output:**
+    Carefully review the output of the playbook to ensure all tasks completed successfully without errors.
+
+## Next Steps
+
+Once this pre-setup playbook has completed successfully, your infrastructure should be ready to proceed with your Kolla Ansible OpenStack deployment using the configurations defined in your main Kolla Ansible repository.
+
+
