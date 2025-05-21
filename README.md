@@ -73,17 +73,4 @@ A well-designed OpenStack deployment leverages multiple distinct networks, each 
 ### 4. External Network (Public / Provider Network)
 
 * **Purpose:** This network provides connectivity between OpenStack instances and the outside world (e.g., the internet, corporate intranet). It's where floating IPs are allocated and associated with instances, allowing external access to them. It also provides the gateway for tenant networks to reach external destinations.
-* **Traffic Examples:**
-    * North-South traffic flow for instances to access external services.
-    * Incoming connections to instances via floating IPs.
-    * OpenStack Horizon dashboard access (if exposed externally).
-    * OpenStack API endpoints (Keystone, Nova, Neutron APIs) for external clients.
-* **Considerations:**
-    * **Security:** This is the most exposed network and requires robust firewalling and security group enforcement.
-    * **IP Addressing:** Typically uses publicly routable IP addresses or addresses from a corporate external range.
-    * **Gateway:** Neutron network nodes (or dedicated router appliances) act as gateways to this network.
-    * **Bandwidth:** Can experience significant traffic, especially if many instances provide public services.
 
----
-
-This README provides a foundational understanding of the network segregation strategy for an OpenStack multi-node HA environment. Future sections or related documentation would delve into specific implementation details, IP addressing schemes, VLAN/VXLAN configuration, and high-availability mechanisms for each network type.
