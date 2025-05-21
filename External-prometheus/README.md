@@ -9,11 +9,9 @@ Monitoring an OpenStack cloud is crucial for maintaining performance, identifyin
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed on your monitoring server:
+Before you begin, ensure you have the following installed on your Openstack Infrastructure:
 
-* **Docker:** [Installation Guide](https://docs.docker.com/get-docker/)
-* **Docker Compose:** [Installation Guide](https://docs.docker.com/compose/install/)
-* ** OpenStack nodes:** For deploying and configuring `node_exporter` on openstack nodes with enables this parameter in kolla-ansible globals.yml.
+* **OpenStack nodes:** For deploying and configuring `node_exporter` on openstack nodes with enables this parameter in kolla-ansible globals.yml.
 
 ## Architecture
 
