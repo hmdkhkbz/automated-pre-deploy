@@ -1,4 +1,4 @@
-# Kolla Ansible Infrastructure Pre-setup Playbook
+# Ansible Infrastructure Pre-setup Playbook
 
 This repository contains an Ansible playbook designed to prepare your server infrastructure for a seamless OpenStack deployment using Kolla Ansible. It automates common prerequisites, ensuring that your hosts meet the necessary requirements before running Kolla Ansible's deployment playbooks.
 
