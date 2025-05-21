@@ -1,6 +1,6 @@
 # Abrak Infrastructure on Arvan IaaS with Terraform
 
-This repository contains the Terraform configuration for deploying and managing Abraka on Arvan IaaS.
+This repository contains the Terraform configuration for deploying and managing Abraks on Arvan IaaS.
 
 ## Overview
 
@@ -21,20 +21,22 @@ Before using this configuration, ensure you have the following:
 * pre-installed **Arvan Terraform** source codes: https://git.arvancloud.ir/arvancloud/iaas/terraform-provider
 ## Getting Started
 
-1.  **Clone this repository:**
-    ```bash
-    git clone <repository_url>
-    cd <repository_directory>
-    ```
+1.  **Clone Arvancloud IaaS terraform:**
+    before run tf files, you should have installed Arvan IaaS Terraform: 
+     https://git.arvancloud.ir/arvancloud/iaas/terraform-provider
+git clone https://git.arvancloud.ir/arvancloud/iaas/terraform-provider.git
+
+
 
 2.  **Initialize Terraform:**
     ```bash
     terraform init
+    terraform apply -auto-approve
     ```
     This command downloads the necessary Arvan provider plugins.
 
 3.  **Review and modify the `variables.tf` file:**
-    Create a `terraform.tfvars` file (or rename `terraform.tfvars.example`) and provide the required values for the variables defined in `variables.tf`. This file typically includes:
+    Provide the required values for the variables defined in `variables.tf`. This file typically includes:
     * Arvan region
     * Instance sizes
     * Network CIDR blocks
@@ -43,13 +45,13 @@ Before using this configuration, ensure you have the following:
 
 4.  **Plan the infrastructure:**
     ```bash
-    terraform plan
+    terraform plan 
     ```
     This command shows you the changes that Terraform will apply to your Arvan IaaS environment without actually making them. Review the output carefully to ensure it aligns with your expectations.
 
 5.  **Apply the configuration:**
     ```bash
-    terraform apply
+    terraform apply -auto-approve
     ```
     This command creates or modifies the resources as defined in your configuration. You will be prompted to confirm the actions before they are executed.
 
@@ -58,7 +60,6 @@ Before using this configuration, ensure you have the following:
 * `main.tf`: Contains the main resource definitions for your AbrAk infrastructure.
 * `variables.tf`: Defines the input variables used in the configuration.
 * `outputs.tf`: Defines the output values that will be displayed after the deployment.
-* `terraform.tfvars.example`: A template file for defining your environment-specific variables. Rename it to `terraform.tfvars` and modify the values.
 * **(Add any other relevant configuration files or directories)**
 
 ## Usage
