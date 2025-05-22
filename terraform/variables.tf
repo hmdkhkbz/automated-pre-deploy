@@ -57,5 +57,5 @@ variable "api_key" {
   type        = string
   description = "API key for accessing the provider"
   sensitive   = true
-  default     = "apikey 92f9e00a-fd2c-5b28-9491-b74c191248e5"
+  default     = "apikey xxxxx"
 }
