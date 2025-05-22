@@ -66,7 +66,7 @@ resource "arvan_abrak" "controllers" {
   ssh_key_name = "ary"
   image_id   = local.chosen_image.id
   flavor_id  = local.controller_plan.id
-  disk_size  = 60
+  disk_size  = 100
   networks = [
     {
       network_id = local.chosen_network.network_id
@@ -93,7 +93,7 @@ resource "arvan_abrak" "computes" {
   ssh_key_name = "ary"
   image_id   = local.chosen_image.id
   flavor_id  = local.compute_plan.id
-  disk_size  = 80
+  disk_size  = 100
   networks = [
     {
       network_id = local.chosen_network.network_id
@@ -123,7 +123,7 @@ resource "arvan_abrak" "networks" {
   ssh_key_name = "ary"
   image_id   = local.chosen_image.id
   flavor_id  = local.network_plan.id
-  disk_size  = 40
+  disk_size  = 80
   networks = [
     {
       network_id = local.chosen_network.network_id

@@ -19,7 +19,7 @@ variable "chosen_name" {
 variable "controller_plan_id" {
   type        = string
   description = "The chosen ID for controller plan"
-  default     = "g2-8-4-0"
+  default     = "g2-16-8-0"
 }
 
 variable "compute_plan_id" {
@@ -57,5 +57,5 @@ variable "api_key" {
   type        = string
   description = "API key for accessing the provider"
   sensitive   = true
-  default     = "apikey xxxxxx"
+  default     = "apikey 92f9e00a-fd2c-5b28-9491-b74c191248e5"
 }
