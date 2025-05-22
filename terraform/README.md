@@ -16,6 +16,11 @@ This configuration automates the creation and management of the following resour
 Before using this configuration, ensure you have the following:
 
 * **Terraform CLI** installed on your local machine (version >= X.Y.Z). You can find installation instructions [here](https://www.terraform.io/downloads.html).
+
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install terraform
+
 * An **Arvan IaaS account** with the necessary permissions to create and manage resources.
 * Your **Arvan API credentials** configured for Terraform. This typically involves setting environment variables or using a provider configuration file. Refer to the [Arvan Terraform Provider documentation](<Arvan Provider Documentation Link - Replace with actual link>) for details.
 * pre-installed **Arvan Terraform** source codes: https://git.arvancloud.ir/arvancloud/iaas/terraform-provider
@@ -44,9 +49,10 @@ git clone https://git.arvancloud.ir/arvancloud/iaas/terraform-provider.git
 
 
 4.  **Plan the infrastructure:**
-    ```bash
-    terraform plan 
-    ```
+git clone https://github.com/hmdkhkbz/automated-pre-deploy.git
+Cloning into 'automated-pre-deploy'...
+
+
     This command shows you the changes that Terraform will apply to your Arvan IaaS environment without actually making them. Review the output carefully to ensure it aligns with your expectations.
 
 5.  **Apply the configuration:**
