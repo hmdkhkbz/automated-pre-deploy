@@ -22,14 +22,13 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashi
 sudo apt update && sudo apt install terraform
 
 * An **Arvan IaaS account** with the necessary permissions to create and manage resources.
-* Your **Arvan API credentials** configured for Terraform. This typically involves setting environment variables or using a provider configuration file. Refer to the [Arvan Terraform Provider documentation](<Arvan Provider Documentation Link - Replace with actual link>) for details.
-* pre-installed **Arvan Terraform** source codes: https://git.arvancloud.ir/arvancloud/iaas/terraform-provider
+* Your **Arvan API credentials** configured for Terraform.
+add apikey to variables.tf
+
 ## Getting Started
 
 1.  **Clone Arvancloud IaaS terraform:**
-    before run tf files, you should have installed Arvan IaaS Terraform: 
-     https://git.arvancloud.ir/arvancloud/iaas/terraform-provider
-git clone https://git.arvancloud.ir/arvancloud/iaas/terraform-provider.git
+    before run tf files, you should have installed this terraform on your host
 
 
 
