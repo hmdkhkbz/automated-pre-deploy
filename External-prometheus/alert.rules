@@ -144,9 +144,9 @@ groups:
         labels:
           severity: P4
         annotations:
-          summary: "[`{{`{{$labels.hostname}}`}}`] `{{`{{$labels.exported_service}}`}}` down"
+          summary: "[`{{$labels.hostname}}`] `{{$labels.exported_service}}` down"
           description: >
-            The service `{{`{{$labels.exported_service}}`}}` running on `{{`{{$labels.hostname}}`}}`
+            The service `{{$labels.exported_service}}` running on `{{$labels.hostname}}`
             is being reported as down.
 
       - alert: CinderAgentDown
@@ -156,9 +156,9 @@ groups:
         labels:
           severity: P3
         annotations:
-          summary: "[`{{`{{$labels.hostname}}`}}`] `{{`{{$labels.exported_service}}`}}` down"
+          summary: "[`{{$labels.hostname}}`] `{{$labels.exported_service}}` down"
           description: >
-            The service `{{`{{$labels.exported_service}}`}}` running on `{{`{{$labels.hostname}}`}}`
+            The service `{{$labels.exported_service}}` running on `{{$labels.hostname}}`
             is being reported as down for 5 minutes.  This can affect volume operations so it must
             be resolved as quickly as possible.
 
@@ -169,9 +169,9 @@ groups:
         labels:
           severity: P5
         annotations:
-          summary: "[`{{`{{$labels.hostname}}`}}`] `{{`{{$labels.exported_service}}`}}` disabled"
+          summary: "[`{{$labels.hostname}}`] `{{$labels.exported_service}}` disabled"
           description: >
-            The service `{{`{{$labels.exported_service}}`}}` running on `{{`{{$labels.hostname}}`}}`
+            The service `{{$labels.exported_service}}` running on `{{$labels.hostname}}`
             has been disabled for 60 minutes.  This can affect volume operations so it must be resolved
             as quickly as possible.
 
@@ -182,9 +182,9 @@ groups:
         labels:
           severity: P4
         annotations:
-          summary: "[`{{`{{$labels.id}}`}}`] Volume in ERROR state"
+          summary: "[`{{$labels.id}}`] Volume in ERROR state"
           description: >
-            The volume `{{`{{$labels.id}}`}}` has been in ERROR state for over 24 hours.  It must
+            The volume `{{$labels.id}}` has been in ERROR state for over 24 hours.  It must
             be cleaned up or removed in order to provide a consistent customer experience.
 
   - name: neutron
@@ -195,9 +195,9 @@ groups:
         labels:
           severity: P4
         annotations:
-          summary: "[`{{`{{$labels.hostname}}`}}`] `{{`{{$labels.exported_service}}`}}` down"
+          summary: "[`{{$labels.hostname}}`] `{{$labels.exported_service}}` down"
           description: >
-            The service `{{`{{$labels.exported_service}}`}}` running on `{{`{{$labels.hostname}}`}}`
+            The service `{{$labels.exported_service}}` running on `{{$labels.hostname}}`
             is being reported as down.
 
       - alert: NeutronAgentDown
@@ -207,9 +207,9 @@ groups:
         labels:
           severity: P3
         annotations:
-          summary: "[`{{`{{$labels.hostname}}`}}`] `{{`{{$labels.exported_service}}`}}` down"
+          summary: "[`{{$labels.hostname}}`] `{{$labels.exported_service}}` down"
           description: >
-            The service `{{`{{$labels.exported_service}}`}}` running on `{{`{{$labels.hostname}}`}}`
+            The service `{{$labels.exported_service}}` running on `{{$labels.hostname}}`
             is being reported as down for 5 minutes. This can affect network operations so it must
             be resolved as quickly as possible.
 
@@ -220,9 +220,9 @@ groups:
         labels:
           severity: P5
         annotations:
-          summary: "[`{{`{{$labels.hostname}}`}}`] `{{`{{$labels.exported_service}}`}}` disabled"
+          summary: "[`{{$labels.hostname}}`] `{{$labels.exported_service}}` disabled"
           description: >
-            The service `{{`{{$labels.exported_service}}`}}` running on `{{`{{$labels.hostname}}`}}`
+            The service `{{$labels.exported_service}}` running on `{{$labels.hostname}}`
             has been disabled for 60 minutes.  This can affect network operations so it must be resolved
             as quickly as possible.
 
@@ -232,9 +232,9 @@ groups:
         labels:
           severity: P3
         annotations:
-          summary: "[`{{`{{$labels.device_owner}}`}}`] `{{`{{$labels.mac_address}}`}}` binding failed"
+          summary: "[`{{$labels.device_owner}}`] `{{$labels.mac_address}}` binding failed"
           description: >
-            The NIC `{{`{{$labels.mac_address}}`}}` of `{{`{{$labels.device_owner}}`}}`
+            The NIC `{{$labels.mac_address}}` of `{{$labels.device_owner}}`
             has binding failed port now.
 
       - alert: NeutronNetworkOutOfIPs
@@ -243,10 +243,10 @@ groups:
         labels:
           severity: P4
         annotations:
-          summary: "[`{{`{{$labels.network_name}}`}}`] `{{`{{$labels.subnet_name}}`}}` running out of IPs"
+          summary: "[`{{$labels.network_name}}`] `{{$labels.subnet_name}}` running out of IPs"
           description: >
-            The subnet `{{`{{$labels.subnet_name}}`}}` within `{{`{{$labels.network_name}}`}}`
-            is currently at `{{`{{$value}}`}}`% utilization.  If the IP addresses run out, it will
+            The subnet `{{$labels.subnet_name}}` within `{{$labels.network_name}}`
+            is currently at `{{$value}}`% utilization.  If the IP addresses run out, it will
             impact the provisioning of new ports.
 
   - name: nova
@@ -257,9 +257,9 @@ groups:
         labels:
           severity: P4
         annotations:
-          summary: "[`{{`{{$labels.hostname}}`}}`] `{{`{{$labels.exported_service}}`}}` down"
+          summary: "[`{{$labels.hostname}}`] `{{$labels.exported_service}}` down"
           description: >
-            The service `{{`{{$labels.exported_service}}`}}` running on `{{`{{$labels.hostname}}`}}`
+            The service `{{$labels.exported_service}}` running on `{{$labels.hostname}}`
             is being reported as down.
 
       - alert: NovaAgentDown
@@ -269,9 +269,9 @@ groups:
         labels:
           severity: P3
         annotations:
-          summary: "[`{{`{{$labels.hostname}}`}}`] `{{`{{$labels.exported_service}}`}}` down"
+          summary: "[`{{$labels.hostname}}`] `{{$labels.exported_service}}` down"
           description: >
-            The service `{{`{{$labels.exported_service}}`}}` running on `{{`{{$labels.hostname}}`}}`
+            The service `{{$labels.exported_service}}` running on `{{$labels.hostname}}`
             is being reported as down.  This can affect compute operations so it must be resolved
             as quickly as possible.
 
@@ -282,9 +282,9 @@ groups:
         labels:
           severity: P5
         annotations:
-          summary: "[`{{`{{$labels.hostname}}`}}`] `{{`{{$labels.exported_service}}`}}` disabled"
+          summary: "[`{{$labels.hostname}}`] `{{$labels.exported_service}}` disabled"
           description: >
-            The service `{{`{{$labels.exported_service}}`}}` running on `{{`{{$labels.hostname}}`}}`
+            The service `{{$labels.exported_service}}` running on `{{$labels.hostname}}`
             has been disabled for 60 minutes.  This can affect compute operations so it must be resolved
             as quickly as possible.
 
@@ -308,7 +308,7 @@ groups:
         annotations:
           summary: "[nova] Capacity risk"
           description: >
-            The cloud capacity is currently at `{{`{{$value}}`}}` which means there is a risk of running
+            The cloud capacity is currently at `{{$value}}` which means there is a risk of running
             out of capacity due to the timeline required to add new nodes.  Please ensure that adequate
             amount of infrastructure is assigned to this deployment to prevent this.
 
