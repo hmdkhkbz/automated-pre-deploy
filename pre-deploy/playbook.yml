@@ -1,4 +1,3 @@
----
 - hosts: all
   become: true
   gather_facts: yes
@@ -8,11 +7,11 @@
     - { role: kolla-user, tags: ["kolla-user"] }
     - { role: docker, when: "'localhost' in group_names", tags: ["docker"] }
     - { role: private-registry, when: "'localhost' in group_names", tags: ["reg"] }
-    - { role: pre-kolla }
-    - { role: nova-presetup }
-    - { role: cinder-presetup }
-    - { role: glance-presetup }
-    - { role: ovn-presetup }
-    - { role: fluentd-presetup }
-    - { role: cron-presetup }
-    - { role: certs-presetup }
+    - { role: pre-kolla, when: "'localhost' in group_names", tags: ["kolla"] }
+    - { role: nova-presetup, when: inventory_hostname != 'localhost' }
+    - { role: cinder-presetup, when: inventory_hostname != 'localhost' }
+    - { role: glance-presetup, when: inventory_hostname != 'localhost' }
+    - { role: ovn-presetup, when: inventory_hostname != 'localhost' }
+    - { role: fluentd-presetup, when: inventory_hostname != 'localhost' }
+    - { role: cron-presetup, when: inventory_hostname != 'localhost' }
+    - { role: certs-presetup, when: inventory_hostname != 'localhost' }

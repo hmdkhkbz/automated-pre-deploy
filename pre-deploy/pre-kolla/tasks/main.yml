@@ -25,29 +25,6 @@
     executable: pip3
     state: latest
 
-- name: Create Python virtual environment (if enabled)
-  when: use_venv
-  command: python3 -m venv {{ venv_path }}
-  args:
-    creates: "{{ venv_path }}"
-
-- name: Set pip executable path
-  set_fact:
-    pip_exec: "{{ venv_path }}/bin/pip"
-    ansible_galaxy_exec: "{{ venv_path }}/bin/ansible-galaxy"
-  when: use_venv
-
-- name: Set pip executable path fallback (when venv not used)
-  set_fact:
-    pip_exec: "pip3"
-    ansible_galaxy_exec: "ansible-galaxy"
-  when: not use_venv
-
-- name: Install Ansible
-  pip:
-    name: "ansible>=8,<9"
-    executable: "{{ pip_exec }}"
-
 - name: Clone Kolla Ansible from Git
   git:
     repo: "{{ kolla_ansible_git_repo }}"
@@ -58,20 +35,14 @@
 - name: Install Kolla-Ansible Python dependencies
   pip:
     requirements: "{{ kolla_clone_dest }}/requirements.txt"
-    executable: "{{ pip_exec }}"
 
 - name: Install Kolla-Ansible itself
-  pip:
-    name: "{{ kolla_clone_dest }}"
-    executable: "{{ pip_exec }}"
-
-- name: Install Ansible Galaxy dependencies
-  command: "{{ ansible_galaxy_exec }} install -r requirements.yml"
+  shell: |
+    pip install kolla-ansible && kolla-ansible install-deps
   args:
-    chdir: "{{ kolla_clone_dest }}"
-  environment:
-    PATH: "{{ venv_path }}/bin:{{ ansible_env.PATH }}"
-  when: use_venv
+    creates: "bin/kolla-ansible"
+  register: kolla_ansible_install
+  changed_when: kolla_ansible_install.rc == 0 and "Requirement already satisfied" not in kolla_ansible_install.stdout
 
 - name: Ensure /etc/kolla exists
   file:
@@ -82,23 +53,38 @@
     mode: 0755
   become: true
 
-- name: Copy Kolla configuration defaults
-  copy:
+- name: Copy Kolla example configuration files
+  ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "/etc/kolla/{{ item | basename }}"
-    remote_src: yes
-  with_fileglob:
-    - "{{ kolla_clone_dest }}/etc/kolla/*"
-  become: true
+    dest: "{{ kolla_config_dir }}"
+    force: no
+  with_items:
+    - "{{ kolla_etc_examples_path }}/kolla/globals.yml"
+    - "{{ kolla_etc_examples_path }}/kolla/passwords.yml"
 
-- name: Ensure inventory destination directory exists
-  file:
-    path: "{{ kolla_inventory_dest }}"
-    state: directory
-    mode: 0755
+- name: Get checksum of current passwords.yml
+  stat:
+    path: "{{ kolla_passwords_file }}"
+    checksum_algorithm: sha1
+  register: current_pwd_file
+
+- name: Get checksum of example passwords.yml
+  stat:
+    path: "{{ kolla_etc_examples_path }}/kolla/passwords.yml"
+    checksum_algorithm: sha1
+  register: example_pwd_file
+
+- name: Generate passwords with kolla-genpwd if current passwords.yml matches example
+  command: kolla-genpwd
+  register: kolla_genpwd_result
+  when: current_pwd_file.stat.checksum == example_pwd_file.stat.checksum
+  changed_when: kolla_genpwd_result.rc == 0 and
+                "Existing passwords.yml not modified" not in kolla_genpwd_result.stderr
+  failed_when: kolla_genpwd_result.rc != 0 and
+               "Existing passwords.yml not modified" not in kolla_genpwd_result.stderr
 
 - name: Copy multinode inventory
   copy:
     src: "{{ kolla_clone_dest }}/ansible/inventory/multinode"
-    dest: "{{ kolla_inventory_dest }}/multinode"
+    dest: "/root/multinode"
     remote_src: yes

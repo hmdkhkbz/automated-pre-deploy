@@ -4,4 +4,6 @@ kolla_ansible_git_repo: "https://opendev.org/openstack/kolla-ansible.git"
 kolla_clone_dest: "/opt/kolla-ansible"
 kolla_inventory_dest: "/opt/kolla-inventory"
 use_venv: true
-venv_path: "/opt/kolla-venv"
+kolla_etc_examples_path: "/usr/local/share/kolla-ansible/etc_examples"
+kolla_config_dir: "/etc/kolla/"
+kolla_passwords_file: "/etc/kolla/passwords.yml"
