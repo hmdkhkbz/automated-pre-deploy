@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: true
+  gather_facts: yes
+  name: make nodes ready to deploy
+  roles:
+    - { role: pre-deploy }
+    - { role: docker, when: "'mon' in group_names or 'osd' in group_names" }
+    - { role: kolla-user, tags: ["kolla-user"] }
+    - { role: private-registry }
+    - { role: pre-kolla }
+    - { role: nova-presetup }
+    - { role: cinder-presetup }
+    - { role: glance-presetup }
+    - { role: ovn-presetup }
+    - { role: fluentd-presetup }
+    - { role: cron-presetup }
+    - { role: certs-presetup }
