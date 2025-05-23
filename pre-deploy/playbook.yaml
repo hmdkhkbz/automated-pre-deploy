@@ -1,8 +1,0 @@
----
-- hosts: all
-  become: true
-  gather_facts: yes
-  name: make nodes ready to deploy
-  roles:
-    - { role: pre-deploy }
-    - { role: docker, when: "'mon' in group_names or 'osd' in group_names" }

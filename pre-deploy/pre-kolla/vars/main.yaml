@@ -1,0 +1,7 @@
+---
+kolla_ansible_branch: "stable/2024.1"
+kolla_ansible_git_repo: "https://opendev.org/openstack/kolla-ansible.git"
+kolla_clone_dest: "/opt/kolla-ansible"
+kolla_inventory_dest: "/opt/kolla-inventory"
+use_venv: true
+venv_path: "/opt/kolla-venv"

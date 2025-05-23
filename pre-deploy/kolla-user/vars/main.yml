@@ -1,0 +1,4 @@
+kolla_user: kolla
+ssh_key_path: "/home/{{ kolla_user }}/.ssh/id_ed25519"
+ssh_key_comment: "kolla-ansible"
+fetched_keys_dir: "fetched_keys"

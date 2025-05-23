@@ -1,0 +1,59 @@
+    - name: Ensure Kolla user exists
+      ansible.builtin.user:
+        name: "{{ kolla_user }}"
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Add Kolla user to sudoers with NOPASSWD
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/{{ kolla_user }}"
+        content: "{{ kolla_user }} ALL=(ALL) NOPASSWD:ALL"
+        mode: '0440' 
+    
+    - name: Ensure Kolla user exists
+      user:
+        name: "{{ kolla_user }}"
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Add Kolla user to sudoers with NOPASSWD
+      copy:
+        dest: "/etc/sudoers.d/{{ kolla_user }}"
+        content: "{{ kolla_user }} ALL=(ALL) NOPASSWD:ALL"
+        mode: '0440'
+
+    - name: Create .ssh directory
+      file:
+        path: "/home/{{ kolla_user }}/.ssh"
+        state: directory
+        owner: "{{ kolla_user }}"
+        group: "{{ kolla_user }}"
+        mode: '0700'
+
+    - name: Generate SSH key pair (only if not present)
+      become_user: "{{ kolla_user }}"
+      openssh_keypair:
+        path: "{{ ssh_key_path }}"
+        type: ed25519
+        comment: "kolla-ansible"
+        force: false
+      register: keypair
+
+    - name: Fetch public key to controller for distribution
+      fetch:
+        src: "{{ ssh_key_path }}.pub"
+        dest: "fetched_keys/{{ inventory_hostname }}.pub"
+        flat: yes
+
+    - name: Read all public keys
+      set_fact:
+        authorized_keys_content: "{{ lookup('fileglob', 'fetched_keys/*.pub', wantlist=True) | map('lookup', 'file') | join('\n') }}"
+
+    - name: Set authorized_keys with all node keys
+      copy:
+        dest: "/home/{{ kolla_user }}/.ssh/authorized_keys"
+        content: "{{ authorized_keys_content }}"
+        owner: "{{ kolla_user }}"
+        group: "{{ kolla_user }}"
+        mode: '0600'
+

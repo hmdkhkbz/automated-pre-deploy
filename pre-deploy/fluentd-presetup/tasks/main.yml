@@ -1,0 +1,7 @@
+- name: Create /etc/kolla/fluentd directory
+  file:
+    path: /etc/kolla/fluentd
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
