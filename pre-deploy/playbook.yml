@@ -5,9 +5,9 @@
   name: make nodes ready to deploy
   roles:
     - { role: pre-deploy, tags: ["pre"] }
-    - { role: docker, when: "'mon' in group_names or 'osd' in group_names" }
     - { role: kolla-user, tags: ["kolla-user"] }
-    - { role: private-registry }
+    - { role: docker, when: "'localhost' in group_names", tags: ["docker"] }
+    - { role: private-registry, when: "'localhost' in group_names", tags: ["reg"] }
     - { role: pre-kolla }
     - { role: nova-presetup }
     - { role: cinder-presetup }
