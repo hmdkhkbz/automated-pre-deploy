@@ -1,0 +1,7 @@
+- name: Create /etc/kolla/cron directory
+  file:
+    path: /etc/kolla/cron
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'

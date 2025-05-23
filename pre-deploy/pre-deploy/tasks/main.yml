@@ -76,7 +76,7 @@
     marker: "# Ansible OpenStack hosts {mark}"
     mode: "0644"
 
-- name: Install base packages for Cephadm and OpenStack
+- name: Install base packages for OpenStack
   become: true
   package:
     name:
@@ -110,28 +110,3 @@
       - lsb-release
     state: present
     update_cache: true
-
-- name: Create /etc/kolla/fluentd directory
-  file:
-    path: /etc/kolla/fluentd
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-
-- name: Create /etc/kolla/cron directory
-  file:
-    path: /etc/kolla/cron
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-
-- name: Copy Kolla certificates to all nodes
-  ansible.builtin.copy:
-    src: /etc/kolla/certificates/
-    dest: /etc/kolla/certificates/
-    mode: '0644'
-    owner: root
-    group: root
-  tags: certs

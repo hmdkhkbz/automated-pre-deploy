@@ -30,14 +30,14 @@
         group: "{{ kolla_user }}"
         mode: '0700'
 
-    - name: Generate SSH key pair (only if not present)
-      become_user: "{{ kolla_user }}"
-      openssh_keypair:
-        path: "{{ ssh_key_path }}"
-        type: ed25519
-        comment: "kolla-ansible"
-        force: false
-      register: keypair
+          #    - name: Generate SSH key pair (only if not present)
+          #become_user: "{{ kolla_user }}"
+          #openssh_keypair:
+          #path: "{{ ssh_key_path }}"
+          # type: ed25519
+          #comment: "kolla-ansible"
+          #force: false
+          #register: keypair
 
     - name: Fetch public key to controller for distribution
       fetch:
