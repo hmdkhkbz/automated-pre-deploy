@@ -12,8 +12,8 @@ receivers:
   - name: 'telegram-receiver'
     telegram_configs:
     - api_url: 'https://api.telegram.org'
-      bot_token: '8054252675:AAGaatpkgKRJmpYKfwFtydc-kOn2FjFfM2I'
-      chat_id: -1002394505668
+      bot_token: 'xxxxxxxxxxxx'
+      chat_id: -xxxxxx
       message: '{{ template "telegram_message" . }}'
       parse_mode: 'HTML'
 
