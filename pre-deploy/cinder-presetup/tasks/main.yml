@@ -1,0 +1,56 @@
+- name: Create /etc/kolla/config/cinder directory
+  file:
+    path: /etc/kolla/config/cinder
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create /etc/kolla/config/cinder/cinder-volume directory
+  file:
+    path: /etc/kolla/config/cinder/cinder-volume
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create /etc/kolla/config/cinder/cinder-backup directory
+  file:
+    path: /etc/kolla/config/cinder/cinder-backup
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Generate ceph.client.cinder-backup.keyring from template
+  ansible.builtin.template:
+    src: "{{ cinderbackupkeyring_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/cinder/cinder-backup/ceph.client.cinder-backup.keyring"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Generate ceph.client.cinder.keyring from template
+  ansible.builtin.template:
+    src: "{{ cinderkeyring_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/cinder/cinder-volume/ceph.client.cinder.keyring"
+    owner: root
+    group: root
+    mode: '0640'
+ 
+- name: copy ceph.client.cinder-backup.keyring for cinder volume
+  ansible.builtin.template:
+    src: "{{ cinderbackupkeyring_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/cinder/cinder-volume/ceph.client.cinder-backup.keyring"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ceph.client.cinder.keyring for cinder backup
+  ansible.builtin.template:
+    src: "{{ cinderkeyring_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/cinder/cinder-backup/ceph.client.cinder.keyring"
+    owner: root
+    group: root
+    mode: '0640'
+

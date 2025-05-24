@@ -1,0 +1,41 @@
+- name: Create /etc/kolla/config/openvswitch directory
+  file:
+    path: /etc/kolla/config/openvswitch
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+
+
+- name: create ovn-controller.conf from template
+  ansible.builtin.template:
+    src: "{{ ovn_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/openvswitch/ovn-controller.conf"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: create ovn-nb-db-server.conf from template
+  ansible.builtin.template:
+    src: "{{ nb_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/openvswitch/ovn-nb-db-server.conf"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: create ovn-northd.conf from template
+  ansible.builtin.template:
+    src: "{{ northd_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/openvswitch/ovn-northd.conf"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: create ovn-sb-db-server.conf from template
+  ansible.builtin.template:
+    src: "{{ sb_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/openvswitch/ovn-sb-db-server.conf"
+    owner: root
+    group: root
+    mode: '0640'

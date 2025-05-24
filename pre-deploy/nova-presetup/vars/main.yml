@@ -1,0 +1,3 @@
+kolla_config_base_dir: "/etc/kolla/config" 
+nova_conf_template_src: "templates/nova.conf.j2"
+cinderkeyring_template_src: "templates/ceph.client.cinder.keyring.j2"

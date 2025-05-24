@@ -1,0 +1,15 @@
+- name: Create /etc/kolla/config/glance directory
+  file:
+    path: /etc/kolla/config/glance
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Generate ceph.client.glance.keyring from template
+  ansible.builtin.template:
+    src: "{{ glancekeyring_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/glance/ceph.client.glance.keyring"
+    owner: root
+    group: root
+    mode: '0640'

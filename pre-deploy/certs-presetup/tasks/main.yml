@@ -1,8 +1,8 @@
-- name: Copy Kolla certificates to all nodes
-  ansible.builtin.copy:
-    src: /etc/kolla/certificates/
-    dest: /etc/kolla/certificates/
-    mode: '0644'
+- name: Create Kolla certificates directory
+  file:
+    path: /etc/kolla/certificates
+    state: directory
+    mode: '0755'
     owner: root
     group: root
   tags: certs

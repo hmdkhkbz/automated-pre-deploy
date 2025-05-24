@@ -1,7 +1,40 @@
-- name: Create /etc/kolla/fluentd directory
+- name: Create /etc/kolla/config/fluentd directory
   file:
-    path: /etc/kolla/fluentd
+    path: /etc/kolla/config/fluentd
     state: directory
     owner: root
     group: root
     mode: '0755'
+
+- name: Create /etc/kolla/config/fluentd/output directory
+  file:
+    path: /etc/kolla/config/fluentd/output
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create /etc/kolla/config/fluentd/input directory
+  file:
+    path: /etc/kolla/config/fluentd/input
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: create output.conf from template
+  ansible.builtin.template:
+    src: "{{ output_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/fluentd/output/output.conf"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: create input.conf from template
+  ansible.builtin.template:
+    src: "{{ input_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/fluentd/input/input.conf"
+    owner: root
+    group: root
+    mode: '0640'
+

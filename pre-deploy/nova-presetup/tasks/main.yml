@@ -1,0 +1,31 @@
+- name: Create /etc/kolla/config directory
+  file:
+    path: /etc/kolla/config
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Generate nova.conf from template
+  ansible.builtin.template:
+    src: "{{ nova_conf_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/nova.conf"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Create /etc/kolla/config/nova directory
+  file:
+    path: /etc/kolla/config/nova
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Generate ceph.client.cinder.keyring from template
+  ansible.builtin.template:
+    src: "{{ cinderkeyring_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/nova/ceph.client.cinder.keyring"
+    owner: root
+    group: root
+    mode: '0640'

@@ -36,6 +36,60 @@
   pip:
     requirements: "{{ kolla_clone_dest }}/requirements.txt"
 
+- name: Install python3-venv package
+  ansible.builtin.apt:
+    name: python3-venv
+    state: present
+    update_cache: yes 
+  become: yes
+  tags:
+    - venv
+
+- name: Ensure parent directory for virtual environment exists
+  ansible.builtin.file:
+    path: "{{ venv_base_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+  tags:
+    - venv_setup
+
+- name: Create Python virtual environment
+  ansible.builtin.command:
+    cmd: "python3 -m venv {{ venv_full_path }}"
+  args:
+    creates: "{{ venv_full_path }}/bin/activate" 
+  become: yes
+  tags:
+    - venv_setup      
+
+- name: Upgrade pip in the virtual environment
+  ansible.builtin.pip:
+    name: pip
+    executable: "{{ venv_full_path }}/bin/pip"
+    state: latest
+  become: yes
+  tags:
+    - kolla_ansible_install
+
+- name: Install Kolla-Ansible from Git
+  ansible.builtin.pip:
+    name: "git+https://opendev.org/openstack/kolla-ansible@master"
+    executable: "{{ venv_full_path }}/bin/pip"
+    state: present
+  become: yes
+  tags:
+    - kolla_ansible_install
+
+- name: Install Kolla-Ansible dependencies
+  ansible.builtin.command:
+    cmd: "{{ venv_full_path }}/bin/kolla-ansible install-deps"
+  become: yes
+  tags:
+    - kolla_ansible_install
+
 - name: Install Kolla-Ansible itself
   shell: |
     pip install kolla-ansible && kolla-ansible install-deps
@@ -53,13 +107,22 @@
     mode: 0755
   become: true
 
+- name: download Kolla globals.yml files
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/hmdkhkbz/glabals.yml/refs/heads/main/glabals.yml
+    dest: /etc/kolla/globals.yml
+    mode: '0644'
+    owner: root
+    group: root
+
+
+
 - name: Copy Kolla example configuration files
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ kolla_config_dir }}"
     force: no
   with_items:
-    - "{{ kolla_etc_examples_path }}/kolla/globals.yml"
     - "{{ kolla_etc_examples_path }}/kolla/passwords.yml"
 
 - name: Get checksum of current passwords.yml
@@ -84,7 +147,9 @@
                "Existing passwords.yml not modified" not in kolla_genpwd_result.stderr
 
 - name: Copy multinode inventory
-  copy:
-    src: "{{ kolla_clone_dest }}/ansible/inventory/multinode"
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/hmdkhkbz/multinode/refs/heads/main/multinode
     dest: "/root/multinode"
-    remote_src: yes
+    mode: '0644'
+    owner: root
+    group: root    

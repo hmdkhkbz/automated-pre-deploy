@@ -1,0 +1,11 @@
+<source>
+  @type tail
+  path /var/log/kolla/openvswitch/*.log
+  pos_file /var/log/fluentd/ovn-logs.pos
+  tag ovn.logs
+  format none
+  read_from_head true
+  refresh_interval 60
+  rotate_wait 5
+  path_key ovn
+</source>

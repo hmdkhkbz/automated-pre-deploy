@@ -1,0 +1,1 @@
+glancekeyring_template_src: "templates/ceph.client.glance.keyring.j2"

@@ -1,0 +1,23 @@
+- name: Generate ceph.conf for nova from template
+  ansible.builtin.template:
+    src: "{{ ceph_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/nova/ceph.conf"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Generate ceph.conf for cinder from template
+  ansible.builtin.template:
+    src: "{{ ceph_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/cinder/ceph.conf"
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Generate ceph.conf for glance from template
+  ansible.builtin.template:
+    src: "{{ ceph_template_src }}"
+    dest: "{{ kolla_config_base_dir }}/glance/ceph.conf"
+    owner: root
+    group: root
+    mode: '0640'

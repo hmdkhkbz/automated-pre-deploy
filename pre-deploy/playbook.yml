@@ -3,15 +3,17 @@
   gather_facts: yes
   name: make nodes ready to deploy
   roles:
-    - { role: pre-deploy, tags: ["pre"] }
+    - { role: pre-deploy, tags: ["pre"], when: "ansible_hostname != 'localhost'" }
     - { role: kolla-user, tags: ["kolla-user"] }
     - { role: docker, when: "'localhost' in group_names", tags: ["docker"] }
     - { role: private-registry, when: "'localhost' in group_names", tags: ["reg"] }
     - { role: pre-kolla, when: "'localhost' in group_names", tags: ["kolla"] }
-    - { role: nova-presetup, when: inventory_hostname != 'localhost' }
-    - { role: cinder-presetup, when: inventory_hostname != 'localhost' }
-    - { role: glance-presetup, when: inventory_hostname != 'localhost' }
-    - { role: ovn-presetup, when: inventory_hostname != 'localhost' }
-    - { role: fluentd-presetup, when: inventory_hostname != 'localhost' }
-    - { role: cron-presetup, when: inventory_hostname != 'localhost' }
-    - { role: certs-presetup, when: inventory_hostname != 'localhost' }
+    - { role: nova-presetup, when: "'localhost' in group_names", tags: ["nova"] }
+    - { role: cinder-presetup, when: "'localhost' in group_names", tags: ["cinder"] }
+    - { role: glance-presetup, when: "'localhost' in group_names", tags: ["glance"] }
+    - { role: ceph-presetup, when: "'localhost' in group_names", tags: ["ceph"] }
+    - { role: ovn-presetup, when: "'localhost' in group_names", tags: ["ovn"] }
+    - { role: fluentd-presetup, when: "'localhost' in group_names", tags: ["flu"] }
+    - { role: cron-presetup, when: "'localhost' in group_names", tags: ["cron"] }
+    - { role: certs-presetup, when: "'localhost' in group_names", tags: ["cert"] }
+    - { role: copy-certs, tags: ["copy"], when: run_copy_certs | default(false) | bool }
