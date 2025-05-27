@@ -1,4 +1,22 @@
+[DEFAULT]
+cpu_allocation_ratio = 6
+
+##Only for Dedicated Server
+##cpu_allocation_ratio = 2
+
 [vnc]
-novncproxy_base_url = https://os-console.hmdkhkbz.ir:6080/vnc_lite.html
+novncproxy_base_url = https://os.hmdkhkbz.ir:6080/vnc_lite.html
 vncserver_listen = 0.0.0.0
 vncserver_proxyclient_address = 127.0.0.1
+
+##Only for Local Storage apply below:
+
+#[libvirt]
+#images_type = lvm
+#images_volume_group = green-lvm
+#volume_clear = shred
+#volume_clear_size = 1024
+
+[filter_scheduler]
+available_filters = nova.scheduler.filters.all_filters
+enabled_filters = AggregateInstanceExtraSpecsFilter
