@@ -8,16 +8,6 @@ automated-pre-deploy Openstack environment (including: 3x Controller, 2x Compute
 
 This repository outlines the network design for a robust, highly available (HA) multi-node OpenStack deployment. The core principle driving this design is **network segregation**, ensuring optimal performance, security, and scalability for various OpenStack traffic types.
 
-## 🎯 Goal
-
-The primary goal of this network design is to establish a clear, efficient, and resilient networking infrastructure for a production-grade OpenStack cloud. By separating different traffic flows onto dedicated networks, we aim to achieve:
-
-* **Enhanced Security:** Isolate sensitive management and storage traffic from tenant data.
-* **Improved Performance:** Prevent traffic congestion and ensure dedicated bandwidth for critical operations.
-* **Simplified Troubleshooting:** Quickly identify and resolve network-related issues by localizing problems to specific network segments.
-* **Greater Scalability:** Allow for independent scaling of network resources based on specific traffic demands.
-* **High Availability:** Design network paths and services with redundancy to minimize single points of failure.
-
 ## 🌐 Network Types
 
 A well-designed OpenStack deployment leverages multiple distinct networks, each serving a specific purpose. This section details the key network types utilized in our setup.
@@ -87,4 +77,12 @@ A well-designed OpenStack deployment leverages multiple distinct networks, each 
 - images: for glance
 - backups: for cinder-backup
 - vms: for nova
+
+## ELK Logging Stack
+
+collects all fluentd output from openstack nodes
+
+## External Prom/Grafana Monitoring Stack & alerting
+
+scrapes all host-level and service-level metrics from all openstack nodes.
 
