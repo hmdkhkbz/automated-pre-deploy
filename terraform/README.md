@@ -21,7 +21,6 @@ wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/sh
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update && sudo apt install terraform
 
-* An **Arvan IaaS account** with the necessary permissions to create and manage resources.
 * Your **Arvan API credentials** configured for Terraform. This typically involves setting environment variables or using a provider configuration file. Refer to the [Arvan Terraform Provider documentation](<Arvan Provider Documentation Link - Replace with actual link>) for details.
 * pre-installed **Arvan Terraform** source codes: https://git.arvancloud.ir/arvancloud/iaas/terraform-provider
 ## Getting Started
