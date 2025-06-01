@@ -1,0 +1,42 @@
+all:
+  vars:
+    ansible_ssh_port: 22
+    ansible_ssh_private_key_file: /root/ary.pem
+    populate_inventory_to_hosts_file: true
+  children:
+    all:
+      children:
+        control:
+          hosts:
+            controller01:
+              ansible_host: 192.168.88.24
+              access_ip: 172.16.18.115
+              ansible_hostname: controller01
+            controller02:
+              ansible_host: 192.168.88.22
+              access_ip: 172.16.18.85
+              ansible_hostname: controller02
+            controller03:
+              ansible_host: 192.168.88.196
+              access_ip: 172.16.18.130
+              ansible_hostname: controller03
+        compute:
+          hosts:
+            compute01:
+              ansible_host: 192.168.88.18
+              access_ip: 172.16.18.38
+              ansible_hostname: compute01
+            compute02:
+              ansible_host: 192.168.88.174
+              access_ip: 172.16.18.13
+              ansible_hostname: compute02
+        network:
+          hosts:
+            network01:
+              ansible_host: 192.168.88.61
+              access_ip: 172.16.18.136
+              ansible_hostname: network01
+            network02:
+              ansible_host: 192.168.88.91
+              access_ip: 172.16.18.21
+              ansible_hostname: network02

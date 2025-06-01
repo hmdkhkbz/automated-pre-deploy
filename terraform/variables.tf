@@ -1,7 +1,7 @@
 variable "region" {
   type        = string
   description = "The chosen region for resources"
-  default     = "ir-tbz-sh1"
+  default     = "ir-thr-ba1"
 }
 
 variable "chosen_distro_name" {
@@ -57,5 +57,5 @@ variable "api_key" {
   type        = string
   description = "API key for accessing the provider"
   sensitive   = true
-  default     = "apikey xxxxx"
+  default     = "apikey xxxx"
 }

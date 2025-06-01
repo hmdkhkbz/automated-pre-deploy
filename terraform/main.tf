@@ -69,9 +69,6 @@ resource "arvan_abrak" "controllers" {
   disk_size  = 100
   networks = [
     {
-      network_id = local.chosen_network.network_id
-    },
-    {
       network_id = arvan_network.mgmt_net.network_id
     },
     {
@@ -94,10 +91,8 @@ resource "arvan_abrak" "computes" {
   image_id   = local.chosen_image.id
   flavor_id  = local.compute_plan.id
   disk_size  = 100
+  enable_ipv4 = true
   networks = [
-    {
-      network_id = local.chosen_network.network_id
-    },
     {
       network_id = arvan_network.mgmt_net.network_id
     },
@@ -125,9 +120,6 @@ resource "arvan_abrak" "networks" {
   flavor_id  = local.network_plan.id
   disk_size  = 80
   networks = [
-    {
-      network_id = local.chosen_network.network_id
-    },
     {
       network_id = arvan_network.mgmt_net.network_id
     },

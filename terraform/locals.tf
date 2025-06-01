@@ -1,6 +1,4 @@
 locals {
-  chosen_network = try([for network in tolist(data.arvan_networks.terraform_network.networks) : network][0], null)
-  
   chosen_image = try([for image in data.arvan_images.terraform_image.distributions : image
     if image.distro_name == var.chosen_distro_name && image.name == var.chosen_name][0], null)
 
