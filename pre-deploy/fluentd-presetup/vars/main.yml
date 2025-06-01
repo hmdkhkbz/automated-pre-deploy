@@ -1,2 +1,0 @@
-input_template_src: "templates/input.conf.j2"
-output_template_src: "templates/output.conf.j2"

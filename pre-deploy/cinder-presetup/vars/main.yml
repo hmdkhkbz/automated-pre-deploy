@@ -1,2 +1,0 @@
-cinderbackupkeyring_template_src: "templates/ceph.client.cinder-backup.keyring.j2"
-cinderkeyring_template_src: "templates/ceph.client.cinder.keyring.j2"

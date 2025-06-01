@@ -1,4 +1,0 @@
-ovn_template_src: "templates/ovn-controller.conf.j2"
-nb_template_src: "templates/ovn-nb-db-server.conf.j2"
-northd_template_src: "templates/ovn-northd.conf.j2"
-sb_template_src: "templates/ovn-sb-db-server.conf.j2"

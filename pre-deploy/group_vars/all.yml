@@ -1,0 +1,49 @@
+docker_gpg_url: "https://download.docker.com/linux/ubuntu/gpg"
+docker_apt_url: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+docker_compose_version: "1.29.2"
+glancekeyring_template_src: "templates/ceph.client.glance.keyring.j2"
+kolla_config_base_dir: "/etc/kolla/config"
+nova_conf_template_src: "templates/nova.conf.j2"
+cinderkeyring_template_src: "templates/ceph.client.cinder.keyring.j2"
+kolla_ansible_branch: "stable/2024.1"
+kolla_ansible_git_repo: "https://opendev.org/openstack/kolla-ansible.git"
+kolla_clone_dest: "/opt/kolla-ansible"
+kolla_inventory_dest: "/opt/kolla-inventory"
+kolla_etc_examples_path: "/usr/local/share/kolla-ansible/etc_examples"
+kolla_config_dir: "/etc/kolla/"
+kolla_passwords_file: "/etc/kolla/passwords.yml"
+venv_base_path: "/opt"
+venv_name: "green_env"
+venv_full_path: "{{ venv_base_path }}/{{ venv_name }}"
+ceph_template_src: "templates/ceph.conf.j2"
+cinderbackupkeyring_template_src: "templates/ceph.client.cinder-backup.keyring.j2"
+cinderkeyring_template_src: "templates/ceph.client.cinder.keyring.j2"
+input_template_src: "templates/input.conf.j2"
+output_template_src: "templates/output.conf.j2"
+kolla_user: green
+ssh_key_path: "/home/{{ kolla_user }}/.ssh/id_ed25519"
+ssh_key_comment: "kolla-ansible"
+fetched_keys_dir: "fetched_keys"
+ovn_template_src: "templates/ovn-controller.conf.j2"
+nb_template_src: "templates/ovn-nb-db-server.conf.j2"
+northd_template_src: "templates/ovn-northd.conf.j2"
+sb_template_src: "templates/ovn-sb-db-server.conf.j2"
+kolla_internal_vip: "172.16.0.254"
+kolla_internal_fqdn: "openstack.hmdkh.local"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
