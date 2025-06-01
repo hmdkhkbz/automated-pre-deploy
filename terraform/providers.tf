@@ -15,5 +15,5 @@ terraform {
 }
 
 provider "arvan" {
-  api_key = "apikey 335748c3-522e-5739-a744-0129cebb7d75"
+  api_key = "apikey xxxx"
 }
